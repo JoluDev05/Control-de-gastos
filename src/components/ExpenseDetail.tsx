@@ -22,6 +22,13 @@ export default function ExpenseDetail({expense}: ExpenseDetailProps) {
     const { dispatch } = useBudget();
     const categoryInfo = useMemo(() => categories.filter(cat => cat.id === expense.category)[0],
     [expense]);
+    const expenseDate = useMemo(() => {
+        if (Array.isArray(expense.date)) {
+            return expense.date[0] ? new Date(expense.date[0]) : new Date();
+        }
+
+        return expense.date ? new Date(expense.date) : new Date();
+    }, [expense.date]);
 
     const leadingActions = () => (
         <LeadingActions>
@@ -62,7 +69,7 @@ export default function ExpenseDetail({expense}: ExpenseDetailProps) {
                         <div className="flex-1 space-y-2">
                             <p className="text-sm font-bold uppercase text-slate-500">{categoryInfo.name}</p>
                             <p>{expense.expenseName}</p>
-                            <p className="text-slate-600 text-sm ">{formatDate(expense.date!.toString())}</p>
+                            <p className="text-slate-600 text-sm ">{formatDate(expenseDate)}</p>
                         </div>
 
                         <AmountDisplay 
